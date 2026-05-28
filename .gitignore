@@ -60,7 +60,11 @@ drafts/
 # Cache
 cache/
 *.cache
-
+# Videos grandes (exceden límite de GitHub)
+assets/videos/*.mp4
+assets/videos/*.mov
+assets/videos/*.avi
+*.mp4
 # Uploads (opcional, según tu configuración)
 # uploads/
 # assets/uploads/
