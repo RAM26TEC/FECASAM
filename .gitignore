@@ -1,4 +1,4 @@
-# Seguridad
+# === ARCHIVOS DE SEGURIDAD ===
 .env
 .env.*
 *.key
@@ -6,70 +6,100 @@
 config.php
 secrets.php
 
-# Bases de datos
+# === BASE DE DATOS ===
 *.sql
 *.sqlite
 *.db
 
-# Logs
+# === LOGS ===
 *.log
 logs/
 error_log
 
-# Archivos temporales
+# === TEMPORALES ===
 *.tmp
 *.temp
 tmp/
 temp/
 
-# Sistema operativo
+# === SISTEMA OPERATIVO ===
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Editores
+# === EDITORES ===
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Node modules (si usas npm)
+# === DEPENDENCIAS ===
 node_modules/
-package-lock.json
-yarn.lock
-
-# Composer (si usas PHP)
 vendor/
-composer.lock
+*.lock
 
-# Backups
+# === BACKUPS ===
 *.bak
 *.backup
 backup/
 backups/
 
-# Testing
-test/
-tests/
-phpunit.xml
+# === PYTHON ===
+__pycache__/
+*.py[cod]
+*.pyc
+.Python
+venv/
+.venv/
+ENV/
+env/
 
-# Documentation drafts
-drafts/
+# === ARCHIVOS DE DESARROLLO (NO PRODUCCIÓN) ===
+# Documentación de desarrollo
+ANALISIS-DETALLADO.md
+ESTRUCTURA-PROYECTO.md
+GUIA-PRUEBAS.md
+INICIO-RAPIDO.md
+PERSONALIZACION.md
+project-context.md
+RECURSOS-NECESARIOS.md
+ACTUALIZACION-RECURSOS.md
+LIBRO-RECLAMACIONES-CONFIG.md
+RESUMEN-REVISION.md
+REVISION-PROYECTO.md
 
-# Cache
-cache/
-*.cache
-# Videos grandes (exceden límite de GitHub)
-assets/videos/*.mp4
-assets/videos/*.mov
-assets/videos/*.avi
-imgs/*.MP4
-imgs/*.mp4
-imgs/*.mov
-imgs/*.avi
-*.MP4
+# Archivos de prueba
+test-*.html
+*-test.html
+test-*.js
+
+# Scripts Python auxiliares
+crear_*.py
+remove_bg.py
+
+# READMEs internos
+assets/downloads/README.md
+assets/downloads/COMO-CONVERTIR-A-PDF.md
+assets/downloads/*.html
+assets/images/README.md
+assets/videos/README.md
+assets/videos/*.md
+docs/RESUMEN*.pdf
+
+# === ARCHIVOS ORIGINALES SIN PROCESAR ===
+imgs/
+logo.jpeg
+assets/images/logo-original.png
+
+# === VIDEOS GRANDES ===
 *.mp4
-# Uploads (opcional, según tu configuración)
-# uploads/
-# assets/uploads/
+*.MP4
+*.mov
+*.avi
+*.MOV
+*.AVI
+
+# === CACHE ===
+.cache/
+*.cache
