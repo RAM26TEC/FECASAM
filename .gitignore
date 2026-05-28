@@ -64,6 +64,11 @@ cache/
 assets/videos/*.mp4
 assets/videos/*.mov
 assets/videos/*.avi
+imgs/*.MP4
+imgs/*.mp4
+imgs/*.mov
+imgs/*.avi
+*.MP4
 *.mp4
 # Uploads (opcional, según tu configuración)
 # uploads/
