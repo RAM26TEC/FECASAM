@@ -1,0 +1,66 @@
+# Seguridad
+.env
+.env.*
+*.key
+*.pem
+config.php
+secrets.php
+
+# Bases de datos
+*.sql
+*.sqlite
+*.db
+
+# Logs
+*.log
+logs/
+error_log
+
+# Archivos temporales
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (si usas npm)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Composer (si usas PHP)
+vendor/
+composer.lock
+
+# Backups
+*.bak
+*.backup
+backup/
+backups/
+
+# Testing
+test/
+tests/
+phpunit.xml
+
+# Documentation drafts
+drafts/
+
+# Cache
+cache/
+*.cache
+
+# Uploads (opcional, según tu configuración)
+# uploads/
+# assets/uploads/

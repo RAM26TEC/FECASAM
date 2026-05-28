@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FECASAM 2026 - Pruebas de Formulario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #8B5E3C;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .stat-card .number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card.total .number { color: #667eea; }
+        .stat-card.passed .number { color: #22c55e; }
+        .stat-card.failed .number { color: #ef4444; }
+        .stat-card.rate .number { color: #f59e0b; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #10b981);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .test-list {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .test-list h2 {
+            color: #8B5E3C;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .test-category {
+            margin-bottom: 2rem;
+        }
+        
+        .test-category h3 {
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .test-item {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .test-item:hover {
+            border-color: #667eea;
+            background: #f9fafb;
+        }
+        
+        .test-item.passed {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+        
+        .test-item.failed {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .test-item.running {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .test-name {
+            flex: 1;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .test-status {
+            font-size: 1.5rem;
+        }
+        
+        .test-status.pending { color: #9ca3af; }
+        .test-status.passed { color: #22c55e; }
+        .test-status.failed { color: #ef4444; }
+        .test-status.running { color: #3b82f6; }
+        
+        .error-message {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            color: #991b1b;
+            font-size: 0.9rem;
+        }
+        
+        .console-output {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .console-line {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .console-line.success { color: #22c55e; }
+        .console-line.error { color: #ef4444; }
+        .console-line.warning { color: #f59e0b; }
+        .console-line.info { color: #3b82f6; }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-flask"></i> FECASAM 2026 - Pruebas de Formulario</h1>
+            <p>Suite de pruebas automatizadas para validación del formulario de inscripción</p>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button id="btnRunAll" class="btn btn-primary">
+                <i class="fas fa-play"></i> Ejecutar Todas las Pruebas
+            </button>
+            <button id="btnRunValid" class="btn btn-secondary">
+                <i class="fas fa-check-circle"></i> Solo Casos Válidos
+            </button>
+            <button id="btnRunInvalid" class="btn btn-secondary">
+                <i class="fas fa-times-circle"></i> Solo Casos Inválidos
+            </button>
+            <button id="btnRunEdge" class="btn btn-secondary">
+                <i class="fas fa-exclamation-triangle"></i> Solo Casos Límite
+            </button>
+            <button id="btnClear" class="btn btn-secondary">
+                <i class="fas fa-trash"></i> Limpiar
+            </button>
+        </div>
+        
+        <!-- Results Summary -->
+        <div class="results" id="resultsSummary" style="display: none;">
+            <div class="stat-card total">
+                <h3>Total de Pruebas</h3>
+                <div class="number" id="totalTests">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+            <div class="stat-card passed">
+                <h3>Aprobadas</h3>
+                <div class="number" id="passedTests">0</div>
+                <small>✓ Sin errores</small>
+            </div>
+            <div class="stat-card failed">
+                <h3>Fallidas</h3>
+                <div class="number" id="failedTests">0</div>
+                <small>✗ Con errores</small>
+            </div>
+            <div class="stat-card rate">
+                <h3>Tasa de Éxito</h3>
+                <div class="number" id="successRate">0%</div>
+                <small>Porcentaje de aprobación</small>
+            </div>
+        </div>
+        
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Ejecutando pruebas...</p>
+        </div>
+        
+        <!-- Test List -->
+        <div class="test-list" id="testList">
+            <h2><i class="fas fa-list-check"></i> Casos de Prueba</h2>
+            
+            <div class="test-category">
+                <h3><i class="fas fa-check-circle" style="color: #22c55e;"></i> Casos Válidos</h3>
+                <div id="validTests"></div>
+            </div>
+            
+            <div class="test-category">
+                <h3><i class="fas fa-times-circle" style="color: #ef4444;"></i> Casos Inválidos</h3>
+                <div id="invalidTests"></div>
+            </div>
+            
+            <div class="test-category">
+                <h3><i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i> Casos Límite</h3>
+                <div id="edgeTests"></div>
+            </div>
+        </div>
+        
+        <!-- Console Output -->
+        <div class="test-list">
+            <h2><i class="fas fa-terminal"></i> Salida de Consola</h2>
+            <div class="console-output" id="consoleOutput">
+                <div class="console-line info">Sistema listo para ejecutar pruebas...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Hidden form for testing -->
+    <form id="registrationForm" style="display: none;">
+        <input type="text" name="fullName">
+        <select name="documentType">
+            <option value="">Seleccione...</option>
+            <option value="dni">DNI</option>
+            <option value="ruc">RUC</option>
+            <option value="ce">CE</option>
+            <option value="passport">Pasaporte</option>
+        </select>
+        <input type="text" name="documentNumber">
+        <input type="email" name="email">
+        <input type="tel" name="phone">
+        <input type="text" name="origin">
+        <select name="category">
+            <option value="">Seleccione...</option>
+            <option value="expositor-alpacas">Expositor - Alpacas</option>
+            <option value="visitante">Visitante</option>
+        </select>
+        <textarea name="comments"></textarea>
+        <input type="checkbox" name="terms">
+    </form>
+    
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/test-form.js"></script>
+    <script>
+        // Referencias a elementos del DOM
+        const elements = {
+            btnRunAll: document.getElementById('btnRunAll'),
+            btnRunValid: document.getElementById('btnRunValid'),
+            btnRunInvalid: document.getElementById('btnRunInvalid'),
+            btnRunEdge: document.getElementById('btnRunEdge'),
+            btnClear: document.getElementById('btnClear'),
+            resultsSummary: document.getElementById('resultsSummary'),
+            loading: document.getElementById('loading'),
+            totalTests: document.getElementById('totalTests'),
+            passedTests: document.getElementById('passedTests'),
+            failedTests: document.getElementById('failedTests'),
+            successRate: document.getElementById('successRate'),
+            progressBar: document.getElementById('progressBar'),
+            validTests: document.getElementById('validTests'),
+            invalidTests: document.getElementById('invalidTests'),
+            edgeTests: document.getElementById('edgeTests'),
+            consoleOutput: document.getElementById('consoleOutput')
+        };
+        
+        // Renderizar lista de pruebas
+        function renderTestList() {
+            // Casos válidos
+            elements.validTests.innerHTML = FormTests.testCases.validCases.map((test, index) => `
+                <div class="test-item" data-test-id="valid-${index}">
+                    <span class="test-name">${test.name}</span>
+                    <span class="test-status pending"><i class="fas fa-circle"></i></span>
+                </div>
+            `).join('');
+            
+            // Casos inválidos
+            elements.invalidTests.innerHTML = FormTests.testCases.invalidCases.map((test, index) => `
+                <div class="test-item" data-test-id="invalid-${index}">
+                    <span class="test-name">${test.name}</span>
+                    <span class="test-status pending"><i class="fas fa-circle"></i></span>
+                </div>
+            `).join('');
+            
+            // Casos límite
+            elements.edgeTests.innerHTML = FormTests.testCases.edgeCases.map((test, index) => `
+                <div class="test-item" data-test-id="edge-${index}">
+                    <span class="test-name">${test.name}</span>
+                    <span class="test-status pending"><i class="fas fa-circle"></i></span>
+                </div>
+            `).join('');
+        }
+        
+        // Agregar línea a consola
+        function addConsoleLog(message, type = 'info') {
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = message;
+            elements.consoleOutput.appendChild(line);
+            elements.consoleOutput.scrollTop = elements.consoleOutput.scrollHeight;
+        }
+        
+        // Actualizar UI de resumen
+        function updateSummary(results) {
+            elements.totalTests.textContent = results.total;
+            elements.passedTests.textContent = results.passed;
+            elements.failedTests.textContent = results.failed;
+            
+            const rate = results.total > 0 ? ((results.passed / results.total) * 100).toFixed(1) : 0;
+            elements.successRate.textContent = rate + '%';
+            
+            elements.progressBar.style.width = rate + '%';
+            
+            elements.resultsSummary.style.display = 'grid';
+        }
+        
+        // Actualizar estado de prueba individual
+        function updateTestStatus(category, index, status, error = null) {
+            const testItem = document.querySelector(`[data-test-id="${category}-${index}"]`);
+            if (!testItem) return;
+            
+            testItem.className = `test-item ${status}`;
+            const statusIcon = testItem.querySelector('.test-status');
+            
+            statusIcon.className = `test-status ${status}`;
+            if (status === 'passed') {
+                statusIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else if (status === 'failed') {
+                statusIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                if (error) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.textContent = error;
+                    testItem.appendChild(errorDiv);
+                }
+            } else if (status === 'running') {
+                statusIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+        }
+        
+        // Ejecutar categoría de pruebas
+        async function runTestCategory(category) {
+            const tests = FormTests.testCases[category + 'Cases'];
+            const categoryMap = {
+                'valid': 'valid',
+                'invalid': 'invalid',
+                'edge': 'edge'
+            };
+            
+            for (let i = 0; i < tests.length; i++) {
+                updateTestStatus(categoryMap[category], i, 'running');
+                addConsoleLog(`Ejecutando: ${tests[i].name}`, 'info');
+                
+                const formData = new FormData();
+                for (const [key, value] of Object.entries(tests[i].data)) {
+                    if (key === 'terms') {
+                        if (value) formData.append(key, 'on');
+                    } else {
+                        formData.append(key, value);
+                    }
+                }
+                
+                try {
+                    const errors = validateRegistrationForm(formData);
+                    const expectedResult = tests[i].expectedResult;
+                    
+                    if (expectedResult === 'success' && errors.length === 0) {
+                        updateTestStatus(categoryMap[category], i, 'passed');
+                        addConsoleLog(`✓ ${tests[i].name} - Correcto`, 'success');
+                    } else if (expectedResult === 'error' && errors.length > 0) {
+                        updateTestStatus(categoryMap[category], i, 'passed');
+                        addConsoleLog(`✓ ${tests[i].name} - Error detectado correctamente`, 'success');
+                    } else {
+                        const error = errors[0] || 'Sin errores';
+                        updateTestStatus(categoryMap[category], i, 'failed', error);
+                        addConsoleLog(`✗ ${tests[i].name} - Falló: ${error}`, 'error');
+                    }
+                } catch (error) {
+                    updateTestStatus(categoryMap[category], i, 'failed', error.message);
+                    addConsoleLog(`✗ ${tests[i].name} - Error: ${error.message}`, 'error');
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+        }
+        
+        // Ejecutar todas las pruebas
+        async function runAllTests() {
+            disableButtons(true);
+            elements.loading.classList.add('active');
+            elements.consoleOutput.innerHTML = '<div class="console-line info">Iniciando suite de pruebas...</div>';
+            
+            FormTests.testResults.total = 0;
+            FormTests.testResults.passed = 0;
+            FormTests.testResults.failed = 0;
+            
+            await runTestCategory('valid');
+            await runTestCategory('invalid');
+            await runTestCategory('edge');
+            
+            updateSummary(FormTests.testResults);
+            elements.loading.classList.remove('active');
+            disableButtons(false);
+            
+            addConsoleLog('═'.repeat(50), 'info');
+            addConsoleLog(`Resumen: ${FormTests.testResults.passed}/${FormTests.testResults.total} pruebas aprobadas`, 
+                         FormTests.testResults.failed === 0 ? 'success' : 'warning');
+        }
+        
+        // Desabilitar/habilitar botones
+        function disableButtons(disabled) {
+            elements.btnRunAll.disabled = disabled;
+            elements.btnRunValid.disabled = disabled;
+            elements.btnRunInvalid.disabled = disabled;
+            elements.btnRunEdge.disabled = disabled;
+        }
+        
+        // Limpiar resultados
+        function clearResults() {
+            renderTestList();
+            elements.resultsSummary.style.display = 'none';
+            elements.consoleOutput.innerHTML = '<div class="console-line info">Sistema listo para ejecutar pruebas...</div>';
+            FormTests.testResults.total = 0;
+            FormTests.testResults.passed = 0;
+            FormTests.testResults.failed = 0;
+        }
+        
+        // Event listeners
+        elements.btnRunAll.addEventListener('click', runAllTests);
+        
+        elements.btnRunValid.addEventListener('click', async () => {
+            clearResults();
+            disableButtons(true);
+            elements.loading.classList.add('active');
+            await runTestCategory('valid');
+            updateSummary(FormTests.testResults);
+            elements.loading.classList.remove('active');
+            disableButtons(false);
+        });
+        
+        elements.btnRunInvalid.addEventListener('click', async () => {
+            clearResults();
+            disableButtons(true);
+            elements.loading.classList.add('active');
+            await runTestCategory('invalid');
+            updateSummary(FormTests.testResults);
+            elements.loading.classList.remove('active');
+            disableButtons(false);
+        });
+        
+        elements.btnRunEdge.addEventListener('click', async () => {
+            clearResults();
+            disableButtons(true);
+            elements.loading.classList.add('active');
+            await runTestCategory('edge');
+            updateSummary(FormTests.testResults);
+            elements.loading.classList.remove('active');
+            disableButtons(false);
+        });
+        
+        elements.btnClear.addEventListener('click', clearResults);
+        
+        // Inicializar
+        renderTestList();
+        addConsoleLog('✓ Sistema de pruebas inicializado correctamente', 'success');
+    </script>
+</body>
+</html>
